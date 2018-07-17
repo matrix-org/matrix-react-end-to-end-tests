@@ -25,10 +25,7 @@ global.riotserver = 'http://localhost:8080';
 global.homeserver = 'http://localhost:8008';
 global.browser = null;
 
-async function runTests() {
-  global.browser = await puppeteer.launch();
-  const page = await helpers.newPage();
-  
+async function runTests(page) {
   const username = 'bruno-' + helpers.randomInt(10000);
   const password = 'testtest';
   process.stdout.write(`* signing up as ${username} ... `);
@@ -39,17 +36,46 @@ async function runTests() {
   process.stdout.write(`* joining room ${room} ... `);
   await join(page, room);
   process.stdout.write('done\n');
-
-  await browser.close();
 }
 
 function onSuccess() {
-  console.log('all tests finished successfully');
 }
 
 function onFailure(err) {
-  console.log('failure: ', err);
-  process.exit(-1);
 }
 
-runTests().then(onSuccess, onFailure);
+async function start(testFn) {
+  global.browser = await puppeteer.launch();
+  let error = null;
+  const page = await helpers.newPage();
+  
+  const consoleLogs = helpers.logConsole(page);
+  const xhrLogs = helpers.logXHRRequests(page);
+
+  const timeout = helpers.delay(20000).then(() => Promise.reject(new Error('timeout!')));
+  const test = testFn(page);
+  
+  try {
+    await Promise.race([test, timeout]);
+  }
+  catch (err) {
+    error = err;
+  }
+
+  if (error) {
+    await page.screenshot({path: "error.png", fullPage: true});
+    console.log('failure: ', error);
+    console.log('console.log output:');
+    console.log(consoleLogs.logs());
+    console.log('XHR requests:');
+    console.log(xhrLogs.logs());
+    process.exit(-1);
+  }
+  else {
+    console.log('all tests finished successfully');
+    process.exit(0);
+  }
+  await browser.close();
+}
+
+start(runTests);//.then(() => {}, () => {});
