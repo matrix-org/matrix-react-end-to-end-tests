@@ -1,5 +1,5 @@
 #!/bin/bash
-BASE_DIR=$(readlink -f $(dirname $0))
+BASE_DIR="$( cd "$( dirname $0 )" && pwd )"
 PIDFILE=riot.pid
 CONFIG_BACKUP=config.e2etests_backup.json
 
