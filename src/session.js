@@ -36,6 +36,8 @@ module.exports = class RiotSession {
     }
 
     static async create(username, puppeteerOptions, riotserver, hsUrl) {
+        if (!puppeteerOptions['args']) puppeteerOptions['args'] = [];
+        puppeteerOptions['args'].push('--no-sandbox');
         const browser = await puppeteer.launch(puppeteerOptions);
         const page = await browser.newPage();
         await page.setViewport({
