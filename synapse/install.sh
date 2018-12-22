@@ -37,3 +37,4 @@ sed -i "s#{{SYNAPSE_PORT}}#${PORT}#g" homeserver.yaml
 sed -i "s#{{FORM_SECRET}}#$(uuidgen)#g" homeserver.yaml
 sed -i "s#{{REGISTRATION_SHARED_SECRET}}#$(uuidgen)#g" homeserver.yaml
 sed -i "s#{{MACAROON_SECRET_KEY}}#$(uuidgen)#g" homeserver.yaml
+cat homeserver.yaml
