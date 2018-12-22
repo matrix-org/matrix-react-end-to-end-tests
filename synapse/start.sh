@@ -6,7 +6,7 @@ source env/bin/activate
 LOGFILE=$(mktemp)
 ./synctl start 2> $LOGFILE
 EXIT_CODE=$?
-if [ $EXIT_CODE -ne 0 ]; then
+#if [ $EXIT_CODE -ne 0 ]; then
 	cat $LOGFILE
-fi
+#fi
 exit $EXIT_CODE
