@@ -42,16 +42,21 @@ module.exports = async function signup(session, username, password, homeserver) 
     /// focus on the button to make sure error validation
     /// has happened before checking the form is good to go
     const registerButton = await session.query('.mx_Login_submit');
+    console.log("Focus register button")
     await registerButton.focus();
+    console.log("Check for errors")
     //check no errors
     const error_text = await session.tryGetInnertext('.mx_Login_error');
     assert.strictEqual(!!error_text, false);
     //submit form
     //await page.screenshot({path: "beforesubmit.png", fullPage: true});
+    console.log("Submit form")
     await registerButton.click();
 
     //confirm dialog saying you cant log back in without e-mail
+    console.log("Wait for email dialog")
     const continueButton = await session.query('.mx_QuestionDialog button.mx_Dialog_primary');
+    console.log("Continue past dialog")
     await continueButton.click();
 
     //find the privacy policy checkbox and check it
