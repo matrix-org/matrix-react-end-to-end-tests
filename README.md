@@ -1,3 +1,7 @@
+# New location
+
+The riot-web end-to-end tests have been merged into [matrix-react-sdk](https://github.com/matrix-org/matrix-react-sdk/pull/3537), where all new development should happen from now on. This repository has been archived for this reason.
+
 # Matrix React Web App End-to-End tests
 
 This repository contains tests for the matrix-react-sdk web app. The tests fire up a headless chrome and simulate user interaction (end-to-end). Note that end-to-end has little to do with the end-to-end encryption matrix supports, just that we test the full stack, going from user interaction to expected DOM in the browser.
